@@ -6,7 +6,7 @@
 - RocketMQ gitHub地址：https://github.com/apache/rocketmq
 
 ### 2.架构设计
-
+![img_4.png](img_4.png)
 #### 1）结合部署架构图，描述集群工作流程：
 启动NameServer，NameServer起来后监听端口，等待Broker、Producer、Consumer连上来，相当于一个路由控制中心。
 Broker启动，跟所有的NameServer保持长连接，定时发送心跳包。心跳包中包含当前Broker信息(IP+端口等)以及存储所有Topic信息。注册成功后，NameServer集群中就有Topic跟Broker的映射关系。
@@ -57,7 +57,7 @@ Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应
 
 ## 二、进阶
 ### 1.消息存储
-
+![img_3.png](img_3.png)
 消息存储架构图中主要有下面三个跟消息存储相关的文件构成。
 #### (1) CommitLog：
 - 消息主体以及元数据的存储主体，存储Producer端写入的消息主体内容,消息内容不是定长的。
@@ -70,7 +70,7 @@ Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应
 - IndexFile（索引文件）提供了一种可以通过key或时间区间来查询消息的方法。
 - Index文件的存储位置是：$HOME \store\index${fileName}，文件名fileName是以创建时的时间戳命名的，固定的单个IndexFile文件大小约为400M，一个IndexFile可以保存 2000W个索引，IndexFile的底层存储设计为在文件系统中实现HashMap结构，故rocketmq的索引文件其底层实现为hash索引。
 ### 2.事物消息
-
+![img_2.png](img_2.png)
 - 发送方向消息队列 RocketMQ 服务端发送消息。
 - 服务端将消息持久化成功之后，向发送方 ACK 确认消息已经发送成功，此时消息为半消息。
 - 发送方开始执行本地事务逻辑。
@@ -82,6 +82,7 @@ Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应
 
 #### (1) 同步刷盘：如上图所示，只有在消息真正持久化至磁盘后RocketMQ的Broker端才会真正返回给Producer端一个成功的ACK响应。同步刷盘对MQ消息可靠性来说是一种不错的保障，但是性能上会有较大影响，一般适用于金融业务应用该模式较多。
 #### (2) 异步刷盘：能够充分利用OS的PageCache的优势，只要消息写入PageCache即可将成功的ACK返回给Producer端。消息刷盘采用后台异步线程提交的方式进行，降低了读写延迟，提高了MQ的性能和吞吐量。
+![img_1.png](img_1.png)
 
 ### 4.消息过滤
 Tag过滤方式：Consumer端在订阅消息时除了指定Topic还可以指定TAG，如果一个消息有多个TAG，可以用||分隔。其中，Consumer端会将这个订阅请求构建成一个 SubscriptionData，发送一个Pull消息的请求给Broker端。Broker端从RocketMQ的文件存储层—Store读取数据之前，会用这些数据先构建一个MessageFilter，然后传给Store。Store从 ConsumeQueue读取到一条记录后，会用它记录的消息tag hash值去做过滤，由于在服务端只是根据hashcode进行判断，无法精确对tag原始字符串进行过滤，故在消息消费端拉取到消息后，还需要对消息的原始tag字符串进行比对，如果不同，则丢弃该消息，不进行消息消费。
@@ -102,6 +103,7 @@ Tag过滤方式：Consumer端在订阅消息时除了指定Topic还可以指定T
 - push方式里，consumer把轮询过程封装了，并注册MessageListener监听器，取到消息后，唤醒MessageListener的consumeMessage()来消费，对用户而言，感觉消息是被推送过来的。
 - pull方式里，取消息的过程需要用户自己写，首先通过打算消费的Topic拿到MessageQueue的集合，遍历MessageQueue集合，然后针对每个MessageQueue批量取消息，一次取完后，记录该队列下一次要取的开始offset，直到取完了，再换另一个MessageQueue。
 - 从下面这张简单的示意图也可以大致看出其中的差别，相当于是说，push的方式是：消息发送到broker后，如果是push，则broker会主动把消息推送给consumer即topic中，而pull的方式是:消息投递到broker后，消费端需要主动去broker上拉消息，即需要手动写代码实现，
+![img.png](img.png)
 
 ### 2.如何保证消息可靠性
 #### 1.Producer端：
