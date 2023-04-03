@@ -2,10 +2,10 @@ name: CodeQL Analysis
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: []
   push:
     branches:
-      - master
+      - rwntest
 
 jobs:
   CodeQL-Build:
