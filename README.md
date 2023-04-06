@@ -1,4 +1,25 @@
 
+
+# 一、源码解读
+
+## 一、启动
+
+- 1.打包
+
+`mvn -Prelease-all -DskipTests -Dspotbugs.skip=true clean install -U`
+
+`cd distribution/target/rocketmq-5.1.0/rocketmq-5.1.0`
+
+- 2.启动namesrv
+
+`nohup sh bin/mqnamesrv &`
+
+`tail -f ~/logs/rocketmqlogs/namesrv.log`
+
+
+
+
+# 二、文档资料
 ## 一、基本原理及特性
 ### 1.文档、资料地址
 - RocketMQ官网地址：https://rocketmq.apache.org/
