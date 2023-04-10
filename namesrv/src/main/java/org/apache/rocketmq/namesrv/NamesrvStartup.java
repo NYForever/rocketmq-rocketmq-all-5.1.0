@@ -129,6 +129,7 @@ public class NamesrvStartup {
             System.out.printf("Please set the %s variable in your environment to match the location of the RocketMQ installation%n", MixAll.ROCKETMQ_HOME_ENV);
             System.exit(-2);
         }
+        //初始化配置文件
         MixAll.printObjectProperties(log, namesrvConfig);
         MixAll.printObjectProperties(log, nettyServerConfig);
 
@@ -136,6 +137,7 @@ public class NamesrvStartup {
 
     public static NamesrvController createAndStartNamesrvController() throws Exception {
 
+        //创建Controller
         NamesrvController controller = createNamesrvController();
         start(controller);
         NettyServerConfig serverConfig = controller.getNettyServerConfig();
