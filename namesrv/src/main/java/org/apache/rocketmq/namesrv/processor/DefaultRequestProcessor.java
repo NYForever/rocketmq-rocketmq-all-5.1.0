@@ -87,6 +87,7 @@ public class DefaultRequestProcessor implements NettyRequestProcessor {
                 request);
         }
 
+        //根据不同的请求code码，做不同的处理
         switch (request.getCode()) {
             case RequestCode.PUT_KV_CONFIG:
                 return this.putKVConfig(ctx, request);
@@ -96,6 +97,7 @@ public class DefaultRequestProcessor implements NettyRequestProcessor {
                 return this.deleteKVConfig(ctx, request);
             case RequestCode.QUERY_DATA_VERSION:
                 return this.queryBrokerTopicConfig(ctx, request);
+            //103是broker注册
             case RequestCode.REGISTER_BROKER:
                 return this.registerBroker(ctx, request);
             case RequestCode.UNREGISTER_BROKER:
