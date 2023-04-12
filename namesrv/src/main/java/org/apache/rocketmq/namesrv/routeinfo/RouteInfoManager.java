@@ -936,7 +936,6 @@ public class RouteInfoManager {
                         log.info("brokerLiveTable brokerAddr: {} {}", next.getKey(), next.getValue());
                     }
                 }
-
                 {
                     log.info("clusterAddrTable SIZE: {}", this.clusterAddrTable.size());
                     for (Entry<String, Set<String>> next : this.clusterAddrTable.entrySet()) {
