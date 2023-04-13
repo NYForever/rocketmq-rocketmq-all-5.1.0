@@ -88,31 +88,35 @@
         </encoder>
     </appender>
 
-    <logger name="RocketmqNamesrv" additivity="false" level="INFO">
+    <logger name="RocketmqNamesrv" additivity="true" level="INFO">
         <appender-ref ref="RocketmqNamesrvAppender"/>
     </logger>
 
-    <logger name="RocketmqCommon" additivity="false" level="INFO">
+    <logger name="RocketmqCommon" additivity="true" level="INFO">
         <appender-ref ref="RocketmqNamesrvAppender"/>
     </logger>
 
-    <logger name="RocketmqRemoting" additivity="false" level="INFO">
+    <logger name="RocketmqRemoting" additivity="true" level="INFO">
         <appender-ref ref="RocketmqNamesrvAppender"/>
     </logger>
 
-    <logger name="RocketmqNamesrvConsole" additivity="false" level="INFO">
+    <!--additivity表示要不要使用rootLogger配置的appender进行输出-->
+    <logger name="RocketmqNamesrvConsole" additivity="true" level="INFO">
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="RocketmqController" additivity="false" level="INFO">
+    <logger name="RocketmqController" additivity="true" level="INFO">
         <appender-ref ref="RocketmqNamesrvAppender"/>
     </logger>
 
-    <logger name="RocketmqTraffic" additivity="false" level="INFO">
+    <logger name="RocketmqTraffic" additivity="true" level="INFO">
         <appender-ref ref="RocketmqTrafficAppender" />
     </logger>
 
     <root level="INFO">
+<!--        <appender-ref ref="STDOUT"/>-->
         <appender-ref ref="DefaultAppender"/>
+<!--        <appender-ref ref="Rocke、tmqNamesrvAppender_inner"/>-->
+<!--        <appender-ref ref="RocketmqTrafficAppender_inner"/>-->
     </root>
 </configuration>

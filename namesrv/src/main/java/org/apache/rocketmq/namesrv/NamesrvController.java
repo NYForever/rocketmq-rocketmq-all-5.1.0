@@ -118,10 +118,10 @@ public class NamesrvController {
 
     private void startScheduleService() {
         //启动定时任务 scanNotActiveBroker 扫描失联的broker，从队列中删除
-        this.scanExecutorService.scheduleAtFixedRate(NamesrvController.this.routeInfoManager::scanNotActiveBroker,
+        this.scanExecutorService.scheduleAtFixedRate(this.routeInfoManager::scanNotActiveBroker,
             5, this.namesrvConfig.getScanNotActiveBrokerInterval(), TimeUnit.MILLISECONDS);
 
-        this.scheduledExecutorService.scheduleAtFixedRate(NamesrvController.this.kvConfigManager::printAllPeriodically,
+        this.scheduledExecutorService.scheduleAtFixedRate(this.kvConfigManager::printAllPeriodically,
             1, 10, TimeUnit.MINUTES);
 
         this.scheduledExecutorService.scheduleAtFixedRate(() -> {
@@ -234,6 +234,7 @@ public class NamesrvController {
     }
 
     public void start() throws Exception {
+        //netty启动
         this.remotingServer.start();
 
         // In test scenarios where it is up to OS to pick up an available port, set the listening port back to config
