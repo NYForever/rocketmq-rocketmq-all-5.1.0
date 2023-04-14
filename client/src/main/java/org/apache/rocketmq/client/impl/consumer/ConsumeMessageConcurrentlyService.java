@@ -54,6 +54,7 @@ public class ConsumeMessageConcurrentlyService implements ConsumeMessageService 
     private final DefaultMQPushConsumer defaultMQPushConsumer;
     private final MessageListenerConcurrently messageListener;
     private final BlockingQueue<Runnable> consumeRequestQueue;
+    //消费者线程池，dynamictp修改的就是这里的配置
     private final ThreadPoolExecutor consumeExecutor;
     private final String consumerGroup;
 
@@ -75,6 +76,7 @@ public class ConsumeMessageConcurrentlyService implements ConsumeMessageService 
         } else {
             consumeThreadPrefix = new StringBuilder("ConsumeMessageThread_").append(consumerGroup).append("_").toString();
         }
+        //创建消费线程池
         this.consumeExecutor = new ThreadPoolExecutor(
             this.defaultMQPushConsumer.getConsumeThreadMin(),
             this.defaultMQPushConsumer.getConsumeThreadMax(),
