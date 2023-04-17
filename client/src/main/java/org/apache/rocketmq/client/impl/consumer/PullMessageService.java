@@ -103,6 +103,7 @@ public class PullMessageService extends ServiceThread {
         final MQConsumerInner consumer = this.mQClientFactory.selectConsumer(pullRequest.getConsumerGroup());
         if (consumer != null) {
             DefaultMQPushConsumerImpl impl = (DefaultMQPushConsumerImpl) consumer;
+            //回到DefaultMQPushConsumerImpl类中
             impl.pullMessage(pullRequest);
         } else {
             logger.warn("No matched consumer for the PullRequest {}, drop it", pullRequest);
@@ -123,6 +124,7 @@ public class PullMessageService extends ServiceThread {
     public void run() {
         logger.info(this.getServiceName() + " service started");
 
+        //启动了一个单独的线程，不停地take队列中的数据
         while (!this.isStopped()) {
             try {
                 MessageRequest messageRequest = this.messageRequestQueue.take();

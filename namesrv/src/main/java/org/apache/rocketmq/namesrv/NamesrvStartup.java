@@ -18,10 +18,13 @@ package org.apache.rocketmq.namesrv;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
@@ -50,9 +53,22 @@ public class NamesrvStartup {
     private static NettyClientConfig nettyClientConfig = null;
     private static ControllerConfig controllerConfig = null;
 
+    static {
+        Supplier<Integer> supplier = () -> {
+            String currentJVM = ManagementFactory.getRuntimeMXBean().getName();
+            try {
+                return Integer.parseInt(currentJVM.substring(0, currentJVM.indexOf('@')));
+            } catch (Exception e) {
+                return -1;
+            }
+        };
+        System.out.printf("%s%n", supplier.get());
+    }
+
     public static void main(String[] args) {
         main0(args);
         controllerManagerMain();
+
     }
 
     public static NamesrvController main0(String[] args) {

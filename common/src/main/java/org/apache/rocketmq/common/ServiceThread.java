@@ -50,6 +50,7 @@ public abstract class ServiceThread implements Runnable {
         stopped = false;
         this.thread = new Thread(this, getServiceName());
         this.thread.setDaemon(isDaemon);
+        //子类实现了run方法
         this.thread.start();
     }
 

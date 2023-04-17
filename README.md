@@ -58,6 +58,21 @@ TCP工作在传输层，HTTP工作在应用层
 ### dynamicTp中修改consumer的线程数
 - 1.其实就是修改了 DefaultMQPushConsumer -> DefaultMQPushConsumerImpl -> ConsumeMessageService 实现类中的 consumeExecutor对象
 
+### 打印当前服务的pid
+```
+    static {
+        Supplier<Integer> supplier = () -> {
+            String currentJVM = ManagementFactory.getRuntimeMXBean().getName();
+            try {
+                return Integer.parseInt(currentJVM.substring(0, currentJVM.indexOf('@')));
+            } catch (Exception e) {
+                return -1;
+            }
+        };
+        System.out.printf("%s%n", supplier.get());
+    }
+```
+
 ## 一、启动
 
 - 1.打包

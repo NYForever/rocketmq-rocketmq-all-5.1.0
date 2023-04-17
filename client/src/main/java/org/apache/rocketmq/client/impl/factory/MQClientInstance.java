@@ -257,12 +257,16 @@ public class MQClientInstance {
                         this.mQClientAPIImpl.fetchNameServerAddr();
                     }
                     // Start request-response channel
+                    //启动netty服务
                     this.mQClientAPIImpl.start();
                     // Start various schedule tasks
+                    //获取nameSrv的列表，每2分钟执行一次
                     this.startScheduledTask();
                     // Start pull service
+                    //启动了一个单独的线程，不停的拉取消息
                     this.pullMessageService.start();
                     // Start rebalance service
+                    //负载均衡
                     this.rebalanceService.start();
                     // Start push service
                     this.defaultMQProducer.getDefaultMQProducerImpl().start(false);
@@ -281,6 +285,7 @@ public class MQClientInstance {
         if (null == this.clientConfig.getNamesrvAddr()) {
             this.scheduledExecutorService.scheduleAtFixedRate(() -> {
                 try {
+                    //获取nameSrv的列表，每2分钟执行一次
                     MQClientInstance.this.mQClientAPIImpl.fetchNameServerAddr();
                 } catch (Exception e) {
                     log.error("ScheduledTask fetchNameServerAddr exception", e);
@@ -934,6 +939,7 @@ public class MQClientInstance {
             MQConsumerInner impl = entry.getValue();
             if (impl != null) {
                 try {
+                    //回到DefaultMQPushConsumerImpl类中
                     impl.doRebalance();
                 } catch (Throwable e) {
                     log.error("doRebalance exception", e);

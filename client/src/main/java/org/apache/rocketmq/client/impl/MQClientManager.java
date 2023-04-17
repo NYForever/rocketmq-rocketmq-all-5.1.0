@@ -29,6 +29,7 @@ public class MQClientManager {
     private final static Logger log = LoggerFactory.getLogger(MQClientManager.class);
     private static MQClientManager instance = new MQClientManager();
     private AtomicInteger factoryIndexGenerator = new AtomicInteger();
+    //MQClientInstance的实例都存放在该map中
     private ConcurrentMap<String/* clientId */, MQClientInstance> factoryTable =
         new ConcurrentHashMap<>();
 
