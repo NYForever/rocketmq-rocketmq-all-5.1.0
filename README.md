@@ -51,14 +51,14 @@ TCP工作在传输层，HTTP工作在应用层
 
 ## tips
 
-### 注解中可以使用
-- 1.配置超链  <a href="https://www.baidu.com"></a>
+### 1.注解中可以使用
+- 1.配置超链 `<a href="https://www.baidu.com"></a>`
 - 2.配置要link的类  /** {@link XxxObject}*/
 
-### dynamicTp中修改consumer的线程数
+### 2.dynamicTp中修改consumer的线程数
 - 1.其实就是修改了 DefaultMQPushConsumer -> DefaultMQPushConsumerImpl -> ConsumeMessageService 实现类中的 consumeExecutor对象
 
-### 打印当前服务的pid
+### 3.打印当前服务的pid
 ```
     static {
         Supplier<Integer> supplier = () -> {
@@ -103,7 +103,9 @@ TCP工作在传输层，HTTP工作在应用层
     - 3.启动了一个单独的线程，不停的从自己维护的队列中拉取消息
     - 4.启动`RebalanceService`
 
-- 问题1：Consumer类中`MessageListenerConcurrently`监听器是怎么就能打印拿到的消息的
+
+
+- ### **问题1：Consumer类中`MessageListenerConcurrently`监听器是怎么消费到消息的**
 
 - 1.入口：`Consumer`的`consumer.start();`
 - 2.调用子类`defaultMQPushConsumerImpl.start();`
