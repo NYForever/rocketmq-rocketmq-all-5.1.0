@@ -87,7 +87,21 @@ TCP工作在传输层，HTTP工作在应用层
 
 `tail -f ~/logs/rocketmqlogs/namesrv.log`
 
+## 二、consumer流程
 
+- 1.启动类example模块下，quickstart->Consumer类
+- 2.定义`DefaultMQPushConsumer`类，指定nameSrv、topic、consumeFromWhere等属性后，start开始监听数据
+- 3.start方法中，调用了`DefaultMQPushConsumerImpl`的start方法，`DefaultMQPushConsumerImpl`作为属性注册在了`DefaultMQPushConsumer`中
+- 4.创建`DefaultMQPushConsumerImpl`时，又把`DefaultMQPushConsumer`作为属性注册到了`DefaultMQPushConsumerImpl`中
+- 5.`DefaultMQPushConsumerImpl`的start方法，关键步骤如下
+  - 1.通过`DefaultMQPushConsumer`创建类`MQClientInstance`对象
+  - 2.通过监听器对象`MessageListenerConcurrently`创建`ConsumeMessageService`对象，具体的实现类这里为`ConsumeMessageConcurrentlyService`对象
+  - 3.其中`ConsumeMessageConcurrentlyService`对象中创建了消费组线程池`consumeExecutor`，dynamicTp中修改rocketmq的线程池，就是修改的该对象
+  - 4.在方法的结尾调用了`mQClientFactory.start();`方法，其就是`MQClientInstance`的start方法，在该方法内部又做了很多组件的启动，包括以下
+    - 1.`mQClientAPIImpl.start();`consumer作为netty服务启动，可以和broker，nameSrv通信
+    - 2.获取nameSrv的列表，每2分钟执行一次
+    - 3.启动了一个单独的线程，不停的从自己维护的队列中拉取消息
+    - 4.启动`RebalanceService`
 
 
 # 二、文档资料
