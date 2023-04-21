@@ -468,6 +468,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
             classFilter // class filter
         );
         try {
+            //请求数据
             this.pullAPIWrapper.pullKernelImpl(
                 pullRequest.getMessageQueue(),
                 subExpression,
@@ -945,6 +946,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
                 }
                 this.offsetStore.load();
 
+                //顺序消费pop
                 if (this.getMessageListenerInner() instanceof MessageListenerOrderly) {
                     this.consumeOrderly = true;
                     this.consumeMessageService =
@@ -1238,6 +1240,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
 
     public void subscribe(String topic, String subExpression) throws MQClientException {
         try {
+            //SubscriptionData存放了订阅信息，topic、tag信息
             SubscriptionData subscriptionData = FilterAPI.buildSubscriptionData(topic, subExpression);
             //topic、tag信息放入rebalanceImpl的map中
             this.rebalanceImpl.getSubscriptionInner().put(topic, subscriptionData);

@@ -103,6 +103,26 @@ TCP工作在传输层，HTTP工作在应用层
     - 3.启动了一个单独的线程，不停的从自己维护的队列中拉取消息
     - 4.启动`RebalanceService`
 
+- 问题1：Consumer类中`MessageListenerConcurrently`监听器是怎么就能打印拿到的消息的
+
+- 1.入口：`Consumer`的`consumer.start();`
+- 2.调用子类`defaultMQPushConsumerImpl.start();`
+- 3.启动各组件`mQClientFactory.start();`
+- 4.其中有一步为不停的获取消息 `MQClientInstance`中的`this.pullMessageService.start();`
+- 5.具体调用的是`PullMessageService`类中的run方法
+- 6.run方法中调用的是`this.pullMessage((PullRequest)messageRequest);`方法
+- 7.接下来调用的是`DefaultMQPushConsumerImpl`的`pullMessage`方法
+- 8.在`pullMessage`方法中定义了`PullCallback`对象，会异步触发回调
+- 9.在`pullMessage`方法的最后调用了`this.pullAPIWrapper.pullKernelImpl`方法
+- 10.在`pullKernelImpl`的最后调用了`this.mQClientFactory.getMQClientAPIImpl().pullMessage`获取`PullResult`对象
+- 11.接下来调用`MQClientAPIImpl`的`pullMessageAsync`方法
+- 12.接下来调用`this.remotingClient.invokeAsync`方法，**就是通过netty请求broker的数据**
+- 13.在`operationComplete`回调方法中，会调用第8步中`PullCallback`的`onSuccess`方法，将请求到的数据传过去
+- 14.在`onSuccess`中会调用`consumeMessageService.submitConsumeRequest`
+- 15.走到`ConsumeMessageConcurrentlyService`类中的`submitConsumeRequest`方法，
+- 16.再之后调用`consumeExecutor.submit(consumeRequest)`方法，这里是线程池submit一个任务，具体的逻辑在`ConsumeRequest`类的run方法中
+- 17.在`ConsumeRequest`的run方法中，调用了`listener.consumeMessage`，即监听器的消费方法，最终就能打印消费到的消息
+
 
 # 二、文档资料
 ## 一、基本原理及特性

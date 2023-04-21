@@ -131,6 +131,7 @@ public class PullMessageService extends ServiceThread {
                 if (messageRequest.getMessageRequestMode() == MessageRequestMode.POP) {
                     this.popMessage((PopRequest)messageRequest);
                 } else {
+                    //走这里
                     this.pullMessage((PullRequest)messageRequest);
                 }
             } catch (InterruptedException ignored) {

@@ -99,6 +99,7 @@ public class MQClientInstance {
 
     /**
      * The container of the consumer in the current client. The key is the name of consumerGroup.
+     * key为consumerGroup
      */
     private final ConcurrentMap<String, MQConsumerInner> consumerTable = new ConcurrentHashMap<>();
 
