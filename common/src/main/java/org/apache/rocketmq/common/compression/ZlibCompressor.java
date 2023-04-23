@@ -29,10 +29,18 @@ import org.apache.rocketmq.logging.org.slf4j.LoggerFactory;
 public class ZlibCompressor implements Compressor {
     private static final Logger log = LoggerFactory.getLogger(LoggerName.COMMON_LOGGER_NAME);
 
+    /**
+     * 压缩消息
+     * @param src bytes ready to compress
+     * @param level compression level used to balance compression rate and time consumption
+     * @return
+     * @throws IOException
+     */
     @Override
     public byte[] compress(byte[] src, int level) throws IOException {
         byte[] result = src;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(src.length);
+        //jdk自带的zip包压缩
         java.util.zip.Deflater defeater = new java.util.zip.Deflater(level);
         DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(byteArrayOutputStream, defeater);
         try {

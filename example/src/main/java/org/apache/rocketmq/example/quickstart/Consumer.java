@@ -37,6 +37,7 @@ public class Consumer {
 
         consumer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
 
+        //从哪里消费，会作为心跳信息发送给broker
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 
         consumer.setConsumeThreadMin(5);

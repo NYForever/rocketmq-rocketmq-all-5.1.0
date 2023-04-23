@@ -126,6 +126,7 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
 
     /**
      * Maximum allowed message body size in bytes.
+     * 消息最大大小4m
      */
     private int maxMessageSize = 1024 * 1024 * 4; // 4M
 

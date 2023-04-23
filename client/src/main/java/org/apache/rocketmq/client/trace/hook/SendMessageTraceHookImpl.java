@@ -40,6 +40,10 @@ public class SendMessageTraceHookImpl implements SendMessageHook {
         return "SendMessageTraceHook";
     }
 
+    /**
+     * 发送消息前，创建traceContext对象，set到context的mqTraceContext中
+     * @param context
+     */
     @Override
     public void sendMessageBefore(SendMessageContext context) {
         //if it is message trace data,then it doesn't recorded

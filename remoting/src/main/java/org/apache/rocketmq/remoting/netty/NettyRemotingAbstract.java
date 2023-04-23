@@ -84,6 +84,7 @@ public abstract class NettyRemotingAbstract {
 
     /**
      * This map caches all on-going requests.
+     * key 请求id  value 请求结果
      */
     protected final ConcurrentMap<Integer /* opaque */, ResponseFuture> responseTable =
         new ConcurrentHashMap<>(256);
@@ -467,6 +468,7 @@ public abstract class NettyRemotingAbstract {
         final long timeoutMillis)
         throws InterruptedException, RemotingSendRequestException, RemotingTimeoutException {
         //get the request id
+        //请求id 自增
         final int opaque = request.getOpaque();
 
         try {

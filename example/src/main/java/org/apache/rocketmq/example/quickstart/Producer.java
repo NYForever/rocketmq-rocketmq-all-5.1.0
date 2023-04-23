@@ -38,43 +38,20 @@ public class Producer {
 
     public static void main(String[] args) throws MQClientException, InterruptedException {
 
-        /*
-         * Instantiate with a producer group name.
-         */
         DefaultMQProducer producer = new DefaultMQProducer(PRODUCER_GROUP);
 
-        /*
-         * Specify name server addresses.
-         *
-         * Alternatively, you may specify name server addresses via exporting environmental variable: NAMESRV_ADDR
-         * <pre>
-         * {@code
-         *  producer.setNamesrvAddr("name-server1-ip:9876;name-server2-ip:9876");
-         * }
-         * </pre>
-         */
-        // Uncomment the following line while debugging, namesrvAddr should be set to your local address
         producer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
 
-        /*
-         * Launch the instance.
-         */
         producer.start();
 
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             try {
 
-                /*
-                 * Create a message instance, specifying topic, tag and message body.
-                 */
                 Message msg = new Message(TOPIC /* Topic */,
                     TAG /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
                 );
 
-                /*
-                 * Call send message to deliver message to one of brokers.
-                 */
                 SendResult sendResult = producer.send(msg);
                 /*
                  * There are different ways to send message, if you don't care about the send result,you can use this way
@@ -116,10 +93,6 @@ public class Producer {
                 Thread.sleep(1000);
             }
         }
-
-        /*
-         * Shut down once the producer instance is no longer in use.
-         */
         producer.shutdown();
     }
 }
