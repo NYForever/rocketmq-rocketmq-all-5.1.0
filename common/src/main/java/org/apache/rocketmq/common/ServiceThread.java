@@ -72,6 +72,7 @@ public abstract class ServiceThread implements Runnable {
 
         try {
             if (interrupt) {
+                //标记线程挂起
                 this.thread.interrupt();
             }
 
