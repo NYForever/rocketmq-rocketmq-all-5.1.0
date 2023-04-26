@@ -979,6 +979,7 @@ public class MQClientAPIImpl implements NameServerUpdateCallback {
                     try {
                         PullResult pullResult = MQClientAPIImpl.this.processPullResponse(response, addr);
                         assert pullResult != null;
+                        //这里调用了callBack的success方法
                         pullCallback.onSuccess(pullResult);
                     } catch (Exception e) {
                         pullCallback.onException(e);

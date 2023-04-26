@@ -126,7 +126,14 @@ TCP工作在传输层，HTTP工作在应用层
 - 17.在`ConsumeRequest`的run方法中，调用了`listener.consumeMessage`，即监听器的消费方法，最终就能打印消费到的消息
 
 
-# 二、文档资料
+# 二、《RocketMQ技术内幕》
+
+- 1.NameServer服务器之间在某一时刻的数据并不会完全相同
+- 2.Broker 每隔 30s 向 NameServer 发送一个心跳包，心跳包中包含 BrokerId、Broker地址、Broker名称、 Broker所属集群名称、Broker关联的 FilterServer列表。 但是如果 Broker若机 ， NameServer无法收到心跳包，此时 NameServer如何来剔除这些失 效的 Broker 呢? Name Server会每隔 IOs 扫描 brokerLiveTable状态表，如果 BrokerLive 的 lastUpdateTimestamp 的时间戳距当前时间超过 120s，则认为 Broker失效，移除该 Broker, 关闭与Broker连接，并同时更新topicQueueTable、 brokerAddrTable、 brokerLiveTable、 filterServerTable。
+
+
+
+# 三、文档资料
 ## 一、基本原理及特性
 ### 1.文档、资料地址
 - RocketMQ官网地址：https://rocketmq.apache.org/

@@ -183,6 +183,7 @@ public class NamesrvStartup {
             System.exit(-3);
         }
 
+        //注册一个jvm钩子函数，线程关闭，调用该方法
         Runtime.getRuntime().addShutdownHook(new ShutdownHookThread(log, (Callable<Void>) () -> {
             controller.shutdown();
             return null;

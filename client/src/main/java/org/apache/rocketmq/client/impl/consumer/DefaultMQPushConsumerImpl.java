@@ -468,7 +468,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
             classFilter // class filter
         );
         try {
-            //请求数据
+            //请求数据 Kernel：核心
             this.pullAPIWrapper.pullKernelImpl(
                 pullRequest.getMessageQueue(),
                 subExpression,
@@ -482,6 +482,7 @@ public class DefaultMQPushConsumerImpl implements MQConsumerInner {
                 BROKER_SUSPEND_MAX_TIME_MILLIS,
                 CONSUMER_TIMEOUT_MILLIS_WHEN_SUSPEND,
                 CommunicationMode.ASYNC,
+                //传入了callBack对象
                 pullCallback
             );
         } catch (Exception e) {
