@@ -97,6 +97,7 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
 
     /**
      * Timeout for sending messages.
+     * 发送消息，默认超时时间 3s
      */
     private int sendMsgTimeout = 3000;
 
