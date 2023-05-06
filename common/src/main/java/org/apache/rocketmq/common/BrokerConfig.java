@@ -376,7 +376,8 @@ public class BrokerConfig extends BrokerIdentity {
         }
     }
 
-    private MetricsExporterType metricsExporterType = MetricsExporterType.DISABLE;
+    //开启prometheus监控
+    private MetricsExporterType metricsExporterType = MetricsExporterType.PROM;
 
     private String metricsGrpcExporterTarget = "";
     private String metricsGrpcExporterHeader = "";

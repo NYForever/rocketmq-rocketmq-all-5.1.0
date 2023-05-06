@@ -125,6 +125,9 @@ TCP工作在传输层，HTTP工作在应用层
 - 16.再之后调用`consumeExecutor.submit(consumeRequest)`方法，这里是线程池submit一个任务，具体的逻辑在`ConsumeRequest`类的run方法中
 - 17.在`ConsumeRequest`的run方法中，调用了`listener.consumeMessage`，即监听器的消费方法，最终就能打印消费到的消息
 
+## 三、nameSrv
+
+![img_5.png](img_5.png)
 
 # 二、《RocketMQ技术内幕》
 
