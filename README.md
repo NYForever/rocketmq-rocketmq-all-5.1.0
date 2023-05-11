@@ -65,7 +65,7 @@ IEEE  tcp/ip
 - 可靠的
 - 面向连接的
 - 面向字节流
-- 全双工 建立链接之后，客户端和服务端可以同时相互发送数据
+- **全双工** 建立链接之后，客户端和服务端可以同时相互发送数据
 
 
 ### 3.可靠性如何保证
@@ -95,7 +95,8 @@ TCP 要求不论处在何种网络环境下都要提供高性能通信，并且�
 ![img_7.png](img_7.png)
 
 
-## socket网络编程
+## socket网络编程（链接：客户端链接服务端，服务端等待客户端链接；读网络数据；写网络数据）
+
 
 ### BIO
 
@@ -106,22 +107,28 @@ TCP 要求不论处在何种网络环境下都要提供高性能通信，并且�
 
 
 改进
-- 1.改进一：accept方法，每次创建一个线程，处理一个链接
-- 2.改进二：使用线程池处理accept方法
+- 1.改进一：accept方法，每次创建一个线程，处理一个链接。问题：一万个链接就需要一万个线程
+- 2.改进二：使用线程池处理accept方法。问题：线程池也有可能不够用
 
 ### NIO
 
 - 1.**可以做到一个线程处理很多个链接**
-- 2.rector模型
+- 2.reactor模型
 
+特性：
 - selector：选择器
 - channel：底层其实就是socket
-- buffer：面向缓存
+- buffer：面向缓存；每一个socket都有自己的输入缓冲区和输出缓冲区；使用的是**直接内存**
 
-- ServerSocketChannel：用于接口连接，对应BIO的serverSocket,关注OP_ACCEPT事件
-- SocketChannel：对应BIO的Socket，只负责读写数据，
+- ServerSocketChannel：用于接口连接，对应BIO的serverSocket,关注OP_ACCEPT 接收链接事件
+- SocketChannel：对应BIO的Socket，关注 发起链接、读、写事件
 - buffer：socketChannel读到数据之后并不是直接和应用程序交互，而是 先写入buffer中，由buffer和应用冲虚交互
-- SelectionKey：四个事件，read、write、accept、connect
+- SelectionKey：四个事件，read、write、accept（接收链接）、connect（注册链接）
+
+
+- OP_WRITE事件表示**写缓冲区中如果有空闲空间**，就会触发
+- OP_READ事件表示**读缓冲区有数据就会触发**
+
 
 
 > TCP/IP是传输层协议，主要解决数据如何在网络中传输；而HTTP是应用层协议，主要解决如何包装数据。
@@ -131,6 +138,12 @@ TCP 要求不论处在何种网络环境下都要提供高性能通信，并且�
 > http连接：http连接就是所谓的短连接，即客户端向服务器端发送一次请求，服务器端响应后连接即会断掉；
 > 
 > socket连接：socket连接就是所谓的长连接，理论上客户端和服务器端一旦建立起连接将不会主动断掉；但是由于各种环境因素可能会是连接断开，比如说：服务器端或客户端主机down了，网络故障，或者两者之间长时间没有数据传输，网络防火墙可能会断开该连接以释放网络资源。所以当一个socket连接中没有数据的传输，那么为了维持连接需要发送心跳消息~~具体心跳消息格式是开发者自己定义的
+
+
+单线程的reactor模型 redis6.0之前都是该模式
+多线程主从reactor模型 redis6.0之后改为该模式
+
+![img_12.png](img_12.png)
 
 
 ## udp
